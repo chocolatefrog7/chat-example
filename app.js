@@ -17,6 +17,11 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg);
   });
 
+  socket.on("user typing", () => {
+    console.log("user is typing...");
+    io.emit("user typing");
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });

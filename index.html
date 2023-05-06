@@ -63,6 +63,7 @@
 
 <body>
     <ul id="messages"></ul>
+    <p id="typing-indictor"></p>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
@@ -72,7 +73,19 @@
 
         var messages = document.getElementById('messages');
         var form = document.getElementById('form');
-        var input = document.getElementById('input');
+        const input = document.querySelector("input");
+        const log = document.getElementById("typing-indictor");
+
+            input.addEventListener("input", updateValue);
+
+            function updateValue(e) {
+                socket.emit("user typing");
+                
+                function foo() {
+                    log.textContent = "";
+                }
+                setTimeout(foo, 2000);
+            }
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -81,6 +94,14 @@
                     input.value = '';
                 }
             });
+
+            socket.on("user typing", function () {
+                    log.textContent = "user is typing...";
+                    function foo() {
+                    log.textContent = "";
+                }
+                setTimeout(foo, 2000);
+                });
 
             socket.on('chat message', function (msg) {
                     var item = document.createElement('li');
